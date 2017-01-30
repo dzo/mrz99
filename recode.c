@@ -12,6 +12,18 @@ void readstring(FILE *f, char *p) {
 	while((c=fgetc(f))!=10 && !feof(f));
 }
 
+unsigned short crc16(const unsigned char *data, int len) { 
+  unsigned short crc = 0xFFFF; 
+  int i; 
+  if (len) do { 
+    crc ^= *data++; 
+    for (i=0; i<8; i++) { 
+      if (crc & 1) crc = (crc >> 1) ^ 0x8408; 
+      else crc >>= 1; 
+    } 
+  } while (--len); 
+  return(~crc); 
+}
 
 int main(int argc,char *argv[]) {
 	char data[200000];
@@ -87,6 +99,7 @@ int main(int argc,char *argv[]) {
       id[8]=off;
       strcpy(data+off,"RG_VOICE_DATA");
       off+=strlen("RG_VOICE_DATA");
+
       data[off++]=0xf1; // this looks like a checksum at the end of the file but
       data[off++]=0x8d; // it doesn't seem to matter if it's wrong
       id[6]=off;

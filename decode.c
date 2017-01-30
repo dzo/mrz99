@@ -37,5 +37,5 @@ int main(int argc,char *argv[]) {
                 putchar(10);
                 putchar(0);
 	}
-	printf("%d strings\n",nstrings);
+	fprintf(stderr,"%d strings\n",nstrings);
 }
