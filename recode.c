@@ -4,6 +4,7 @@
 void readstring(FILE *f, char *p) {
 	char c;
 	c=fgetc(f);
+	if(feof(f)) return;
 	if(c!='\"')
 		puts("ERRRRRRRR");
 	while((c=fgetc(f))!='"' && !feof(f))
@@ -49,16 +50,23 @@ int main(int argc,char *argv[]) {
         id[15]=0xaaaaaaaa;
 
         g=fopen("translated.txt","rb");
-	f=fopen("PF090JPENG.LNG","rb");
+//	f=fopen("PF090JPENG.LNG","rb");
 	int start=0x40;
 	unsigned short *idx=(unsigned short *)(data+0x40);
-        fseek(f,0x40,SEEK_SET);
-        short nstrings;
+//        fseek(f,0x40,SEEK_SET);
+        short nstrings=0;
         int offset=0;
         int next=0;
         short ch;
-        fread(&nstrings, 2, 1, f);
+	while(!feof(g)) {
+		readstring(g,st);
+		nstrings++;
+	}
+        nstrings+=2;
+	rewind(g);
+//        fread(&nstrings, 2, 1, f);
         nstrings=nstrings-3;
+	printf("Found %d strings\n",nstrings);
 	unsigned short *strptr=idx+nstrings;
 	int off=0x40+(nstrings+3)*2;
 	int ntrans=0;
