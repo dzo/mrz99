@@ -1,29 +1,33 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistr.h>
+#include <stdlib.h>
 
 void readstring(FILE *f, char *p) {
 	char c;
 	c=fgetc(f);
 	if(feof(f)) return;
-	if(c!='\"')
-		puts("ERRRRRRRR");
+	if(c!='\"') {
+		puts("ERROR: mismatched quotes");
+		exit(1);
+	}
 	while((c=fgetc(f))!='"' && !feof(f))
 		*p++=c;
 	*p++=0;
 	while((c=fgetc(f))!=10 && !feof(f));
 }
 
-unsigned short crc16(const unsigned char *data, int len) { 
-  unsigned short crc = 0xFFFF; 
-  int i; 
-  if (len) do { 
-    crc ^= *data++; 
-    for (i=0; i<8; i++) { 
-      if (crc & 1) crc = (crc >> 1) ^ 0x8408; 
-      else crc >>= 1; 
-    } 
-  } while (--len); 
-  return(~crc); 
+unsigned short crc16(const unsigned char *data, int len) {
+  unsigned short crc = 0xFFFF;
+  int i;
+  if (len) do {
+    crc ^= *data++;
+    for (i=0; i<8; i++) {
+      if (crc & 1) crc = (crc >> 1) ^ 0x8408;
+      else crc >>= 1;
+    }
+  } while (--len);
+  return(~crc);
 }
 
 int main(int argc,char *argv[]) {
@@ -31,7 +35,7 @@ int main(int argc,char *argv[]) {
 	char st[10240];
         FILE *f,*g;
         int i;
-	unsigned *id=(unsigned *) data; 
+	unsigned *id=(unsigned *) data;
 	id[0]=0xa55a5aa5;
 	id[1]=0x01000001;
 	id[2]=0x39304650;
@@ -50,10 +54,8 @@ int main(int argc,char *argv[]) {
         id[15]=0xaaaaaaaa;
 
         g=fopen("translated.txt","rb");
-//	f=fopen("PF090JPENG.LNG","rb");
 	int start=0x40;
 	unsigned short *idx=(unsigned short *)(data+0x40);
-//        fseek(f,0x40,SEEK_SET);
         short nstrings=0;
         int offset=0;
         int next=0;
@@ -64,42 +66,22 @@ int main(int argc,char *argv[]) {
 	}
         nstrings+=2;
 	rewind(g);
-//        fread(&nstrings, 2, 1, f);
         nstrings=nstrings-3;
 	printf("Found %d strings\n",nstrings);
 	unsigned short *strptr=idx+nstrings;
 	int off=0x40+(nstrings+3)*2;
 	int ntrans=0;
         for(i=0;i<nstrings;i++) {
-/*
-                fseek(f,0x40+i*2,SEEK_SET);
-                offset=0;
-                fread(&offset, 2, 1, f);
-                offset=offset*2+0x40;
-                next=0;
-                fread(&next, 2, 1, f);
-                next=next*2+0x40;
-                ch=1;
-                putchar('"');
-                fseek(f,offset,SEEK_SET);
-                while(offset<next-2) {
-                        fread(&ch,2,1,f);
-                        offset+=2;
-                        putchar(ch&127);
-                }
-                putchar('"');
-                putchar(10);
-*/
 		readstring(g,st);
 		puts(st);
 		idx[i]=(off-0x40)/2;
-		if((off-0x40)/2>65535)
-			printf("Error index too large %x\n",(off-0x40)/2);
-		int j=0;
-		for(j=0;st[j]!=0;j++) {
-			data[off++]=st[j];
-			data[off++]=0;
+		if((off-0x40)/2>65535) {
+			printf("ERROR: index too large %x\n",(off-0x40)/2);
+			exit(1);
 		}
+		long unsigned int j=256;
+		u8_to_u16(st,strlen(st),(short *)(data+off),&j);
+		off+=j*2;
 		data[off++]=0;
 		data[off++]=0;
         }
