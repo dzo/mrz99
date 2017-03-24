@@ -86,7 +86,7 @@ int main(int argc,char *argv[]) {
 			printf("ERROR: index too large %x\n",(off-0x40)/2);
 			exit(1);
 		}
-		long unsigned int j=256;
+		size_t j=256;
 		u8_to_u16(st,strlen(st),(short *)(data+off),&j);
 		off+=j*2;
 		data[off++]=0;
