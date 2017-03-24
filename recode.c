@@ -33,6 +33,7 @@ unsigned short crc16(const unsigned char *data, int len) {
 int main(int argc,char *argv[]) {
 	char data[200000];
 	char st[10240];
+	char *infile="translated.txt",*outfile="PF090JPJPN.LNG";
         FILE *f,*g;
         int i;
 	unsigned *id=(unsigned *) data;
@@ -53,7 +54,13 @@ int main(int argc,char *argv[]) {
         id[14]=0xaaaaaaaa;
         id[15]=0xaaaaaaaa;
 
-        g=fopen("translated.txt","rb");
+        if(argc>1)
+                infile=argv[1];
+
+	if(argc>2)
+                outfile=argv[2];
+
+        g=fopen(infile,"rb");
 	int start=0x40;
 	unsigned short *idx=(unsigned short *)(data+0x40);
         short nstrings=0;
@@ -94,7 +101,7 @@ int main(int argc,char *argv[]) {
       data[off++]=0x8d; // it doesn't seem to matter if it's wrong
       id[6]=off;
       printf("%d strings\n",nstrings);
-      f=fopen("PF090JPJPN.LNG","wb");
+      f=fopen(outfile,"wb");
       fwrite(data,off,1,f);
       fclose(f);
 }
