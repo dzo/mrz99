@@ -80,7 +80,7 @@ int main(int argc,char *argv[]) {
 	int ntrans=0;
         for(i=0;i<nstrings;i++) {
 		readstring(g,st);
-		puts(st);
+//		puts(st);
 		idx[i]=(off-0x40)/2;
 		if((off-0x40)/2>65535) {
 			printf("ERROR: index too large %x\n",(off-0x40)/2);
@@ -104,5 +104,6 @@ int main(int argc,char *argv[]) {
       f=fopen(outfile,"wb");
       fwrite(data,off,1,f);
       fclose(f);
+      return(0);
 }
 
