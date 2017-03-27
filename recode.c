@@ -14,7 +14,11 @@ void readstring(FILE *f, char *p) {
 	while((c=fgetc(f))!='"' && !feof(f))
 		*p++=c;
 	*p++=0;
-	while((c=fgetc(f))!=10 && !feof(f));
+//	c=fgetc(f);
+	if((c=fgetc(f))!=10 && !feof(f)) {
+		puts("ERROR: mismatched quotes");
+		exit(1);
+	}
 }
 
 unsigned short crc16(const unsigned char *data, int len) {
@@ -32,7 +36,8 @@ unsigned short crc16(const unsigned char *data, int len) {
 
 int main(int argc,char *argv[]) {
 	char data[200000];
-	char st[10240];
+	char st[1024];
+	short st_u16[1024];
 	char *infile="translated.txt",*outfile="PF090JPJPN.LNG";
         FILE *f,*g;
         int i;
@@ -69,6 +74,7 @@ int main(int argc,char *argv[]) {
         short ch;
 	while(!feof(g)) {
 		readstring(g,st);
+//		printf("%d %s\n",nstrings,st);
 		nstrings++;
 	}
         nstrings+=2;
@@ -78,19 +84,30 @@ int main(int argc,char *argv[]) {
 	unsigned short *strptr=idx+nstrings;
 	int off=0x40+(nstrings+3)*2;
 	int ntrans=0;
+	char **strings=malloc(sizeof(char *)*nstrings);
         for(i=0;i<nstrings;i++) {
 		readstring(g,st);
+		strings[i]=malloc(strlen(st)+1);
+		strcpy(strings[i],st);
+		int j;
+		for(j=0;j<i;j++)
+			if(!strcmp(st,strings[j]))
+				break;
+		if(j<i) {
+			idx[i]=idx[j];
+		} else {
 //		puts(st);
 		idx[i]=(off-0x40)/2;
 		if((off-0x40)/2>65535) {
 			printf("ERROR: index too large %x\n",(off-0x40)/2);
 			exit(1);
 		}
-		size_t j=256;
-		u8_to_u16(st,strlen(st),(short *)(data+off),&j);
-		off+=j*2;
+		size_t sz=512;
+		u8_to_u16(st,strlen(st),(short *)(data+off),&sz);
+		off+=sz*2;
 		data[off++]=0;
 		data[off++]=0;
+		}
         }
       idx[i]=(off-0x40)/2;
       id[8]=off;

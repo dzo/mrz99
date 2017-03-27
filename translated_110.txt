@@ -4246,7 +4246,7 @@ OK?"
 "Connection fees will occur. OK?"
 "Using data %s 
 %s 
-%s" 
+%s"
 "Data version"
 "display"
 "Delete"
