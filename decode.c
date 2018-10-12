@@ -18,17 +18,22 @@ int main(int argc,char *argv[]) {
 		offset=0;
 		fread(&offset, 2, 1, f);
 		offset=offset*2+0x40;
-		next=0;
+/*		next=0;
 		fread(&next, 2, 1, f);
 		next=next*2+0x40;
+*/
 		ch=1;
 		putchar('"');
 		putchar(0);
 		fseek(f,offset,SEEK_SET);
-		while(offset<next-2) {
+		int ch1=1;
+		while(1) {
 			fread(&ch,1,1,f);
-			offset++;
+			fread(&ch1,1,1,f);
+			if(ch==0 && ch1==0)
+				break;
 			putchar(ch&255);
+			putchar(ch1&255); 
 		}
                 putchar('"');
                 putchar(0);

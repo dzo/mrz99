@@ -4538,3 +4538,69 @@ Call %s?"
 "No"
 "Delete probe, OK?"
 "AUX Volume with FM ref"
+"menu"
+"This screen will not be displayed."
+"Startup lock setting"
+"When replacing the battery"
+"When the engine switch is on"
+"Not set"
+"-"
+"Password authentication timing"
+"Change Password"
+"When ON is selected,
+A password input screen is displayed each time."
+"Password changed."
+"Please enter a new password."
+"For confirmation, please re-enter the same password
+Please enter. "
+"Passwords do not match.
+Please try again from the beginning. "
+"Set startup lock.
+Please enter the password.
+* When setting for the first time
+Please enter your initial password. "
+"The password is in correct.
+Letters of the alphabet are
+Please check whether it is wrong. "
+"Change Password"
+"Password confirmation"
+"The activation lock is on."
+"Failed to unlock.
+Whether the upper and lower case letters of the alphabet are incorrect
+please confirm. "
+"Reset the internal memory to the factory default settings.
+Data such as registered location and password etc.
+All setting contents are erased. Is it OK? "
+"Password authentication"
+"Startup lock setting"
+"Destination search"
+"(Outing Menu)"
+"Data excluding home such as registered places and history,
+The setting is deleted. Is it OK? "
+"Data including registered places and history including home,
+The setting is deleted. Is it OK? "
+"Latitude longitude (Japan geodetic system)"
+"Latitude and longitude (world geodetic system)"
+"Northern latitude %c%c.%c%c%c%c%c%c degree east longitude %c%c%c.%c%c%c%c%c%c degrees"
+"Degree input"
+"Degrees minute and second"
+"Datum"
+"Data used%s
+[Map data:%s]
+[Search data:%s]
+Model information Corporate model B1 "
+"Data used%s
+[Map data:%s]
+[Search data:%s]
+Model information Corporate model B2 "
+"Data used%s
+[Map data:%s]
+[Search data:%s]
+Model information Corporate model B3 "
+"Data used%s
+[Map data:%s]
+[Search data:%s]
+Model information Corporate model B4 "
+"I did a route search without considering time regulation.
+Please follow the actual road signs. "
+"Destination search"
