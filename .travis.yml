@@ -3,5 +3,5 @@ language: c
 script:
   - make
 
-before_install:
-  - sudo apt install libunistring-dev
+#before_install:
+#  - sudo apt install libunistring-dev
