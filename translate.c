@@ -65,7 +65,7 @@ void load_dictionary(char *untran,char *tran) {
   while(!feof(g)) {
     readstring(g,st);
     readstring(f,st1);
-    //printf("%s -> %s\n",st,st1);
+    printf("[%s -> %s]\n",st,st1);
     for(j=0;j<nstrings;j++)
         if(!strcmp(st,original[j]))
 				break;
@@ -126,7 +126,7 @@ int main(int argc,char *argv[]) {
         int offset=0;
         int next=0;
         short ch;
-        load_dictionary("untranslated.txt","translated.txt");
+        load_dictionary("untranslated_090.txt","translated_090.txt");
         load_dictionary("untranslated_110.txt","translated_110.txt");
         
 	while(!feof(g)) {
@@ -146,6 +146,7 @@ int main(int argc,char *argv[]) {
         for(i=0;i<nstrings;i++) {
 		readstring(g,st);
                 tr=get_translation(st);
+                printf("%s -> %s\n",st,tr);
 		strings[i]=malloc(strlen(tr)+1);
 		strcpy(strings[i],tr);
 		int j;
